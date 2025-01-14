@@ -13,8 +13,8 @@ Collection of reusable functions for the rest of the definitions in this folder.
 import os
 from openai import OpenAI
 import time
-# import pyautogui
-# from playsound import playsound
+import pyautogui
+from playsound import playsound
 import pandas as pd
 
 # extract prompts from the DataFrame
@@ -22,7 +22,7 @@ def extract_prompts(df, var):
     """Extracts prompt contents from the DataFrame."""
     return df[var].tolist()
 
-# generate a single response using OpenAI API; instruction & few-shot prompting
+# generate a single response using OpenAI API for changing robot parameters; instruction & few-shot prompting
 def generate_response_robmove(prompt, client):
     """
     Generates a response from the OpenAI API based on the given prompt.
@@ -100,6 +100,7 @@ def generate_response_robmove(prompt, client):
     )
     return response.choices[0].message.content, response.usage
 
+# generate a single response using OpenAI API for reiteration and confirmatioin; instruction & few-shot prompting
 def generate_response_ask4conf(prompt, prompt_exe, client):
     """
     Generates a response from the OpenAI API based on the given prompt.
@@ -136,6 +137,7 @@ def generate_response_ask4conf(prompt, prompt_exe, client):
     )
     return response.choices[0].message.content, response.usage
 
+# loop through the prompt list
 def process_prompts(prompt_list, client, generate_response_func, prompt_exe_list=None):
     """
     Processes a list of prompts, generating a completion for each.
@@ -219,3 +221,59 @@ def execution_time_per_prompt(start_time, end_time, promptCount):
     execution_time_perP = execution_time/promptCount
     print(f"Total Execution time: {execution_time:.5f} seconds")
     print(f"Execution time per Prompt: {execution_time_perP:.5f} seconds")
+
+# from audio input to text string
+def AudioToText():
+    # Prompt the user to input 'Y' or 'N' 
+    # note this interaction can be mapped instead to other physical buttons
+    startrecord = input("Start recording a clip? Y/N ").strip()
+
+    # check if start recording on Windows System
+    if startrecord == "y" or startrecord == "Y":
+        # Wait for 3 seconds before executing the hotkey press
+        time.sleep(3)
+
+        # Press the hotkey combination 'Windows logo key' +' H'
+        pyautogui.hotkey('winleft', 'h')
+        audioinput = input("I'm listening ... (say \"new line\" to stop listening)").strip()
+        # print("Hotkey Windows + H pressed: start recording")
+
+        pyautogui.hotkey('winleft', 'h')
+        print("Hotkey Windows + H pressed: stop recording")
+        print("What I heard: " + audioinput)
+        return audioinput
+    else:
+        print("do not record")
+
+# from text to audio using openai 
+def TextToAudio(text, audioStreamFilePath, voice = "nova"):
+    client = OpenAI()
+
+    with client.audio.speech.with_streaming_response.create(
+        model="tts-1",
+        voice="nova",
+        input=text,
+    ) as response:
+        response.stream_to_file(audioStreamFilePath)
+    
+    playsound(audioStreamFilePath)
+
+# simulate confirmation step before robot movement
+def confirm2action(audioStreamFilePath):
+    # Prompt the user to input 'Y' or 'N' 
+    # note this interaction can be mapped instead to other physical buttons
+    startrecord = input("Does the proposed movement align with expectations?? Y/N ").strip()
+
+    # check if start recording on Windows System
+    if startrecord == "y" or startrecord == "Y":
+        # verbal confirmation
+        comfirm_text = "Happy to help! Robot starts moving..."
+        TextToAudio(comfirm_text, audioStreamFilePath)
+        print("Trajectory confirmed. The robot is now in motion...")
+        return 1
+    else:
+        # verbal response
+        comfirm_text = "Oops. Incorrect trajectory. Kindly input the correct parameters and attempt again."
+        TextToAudio(comfirm_text, audioStreamFilePath)
+        print("Incorrect trajectory. Kindly input the correct parameters and attempt again.")
+        return 0
