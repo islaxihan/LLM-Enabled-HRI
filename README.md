@@ -28,6 +28,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE.md) f
 [Website](https://soa.princeton.edu/)
 
 ## Citation
+If you use this project in your research or work, please cite this article:
 
 1. **BibTeX citation**:
 @inproceedings{han2025HRILLM,  
@@ -42,5 +43,15 @@ organization={CAADRIA}
 
 2. **APA-style citation**:
 Han, Isla Xi and Parascho, Stefana. "From Words to Actions: A Large Language Model (LLM) Approach for Human-Robot Interaction in Design-Fabrication Settings." *Proceedings of the 30th International Conference on Computer-Aided Architectural Design Research in Asia (CAADRIA 2025)*. Tokyo, Japan, 2025. [Forthcoming].
+
+*Or directly cite this Github Repo:*
+
+@misc{han_2025_repo,
+  author = {Han, Isla Xi},
+  title = {HRI_LLM},
+  year = {2024},
+  howpublished = {\url{https://github.com/islaxihan/HRI_LLM.git}},
+  note = {Accessed: Date}
+}
 
 *Feel free to adjust the citation style to match your institution's requirements or personal preferences.*
