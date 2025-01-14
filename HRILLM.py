@@ -36,10 +36,10 @@ def generate_response_robmove(prompt, client):
     - str: The content of the assistant's response.
     """
     response = client.chat.completions.create(
-        # Use GPT 3.5 as the LLM
+        # use GPT 3.5 as the LLM
         model="gpt-3.5-turbo",
         temperature=0,
-        # Pre-define conversation messages for the possible roles
+        # pre-define conversation messages for the possible roles
         messages=[
             {"role": "system", "content": """Interpret the user's input to control the robot's movement in millimeters along the x, y, and z axes. Strictly follow these rules:  
             1) Convert all units to millimeters as follows:  
@@ -60,7 +60,7 @@ def generate_response_robmove(prompt, client):
             7) If the input mentions multiple directions or units, convert and apply each direction seperately, then output in the correct format.(e.g., 'move 2 cm up and 3 mm to the right', output 'delta_x, delta_y, delta_z = 3.0, 0.0, 20.0').
             8) Never include any additional characters such as semicolons, quotes, or text outside of the output format."""},
             
-            # Few-shot examples:           
+            # few-shot examples:           
             {"role": "user", "content": "Move up 36mm"},
             {"role": "assistant", "content": "delta_x, delta_y, delta_z = 0.0, 0.0, 36.0"},
 
@@ -94,7 +94,7 @@ def generate_response_robmove(prompt, client):
             {"role": "user", "content": "slide to the right for 40 mm, upward for 33 mm, and away for 54 mm"},
             {"role": "assistant", "content": "delta_x, delta_y, delta_z = 40.0, 54.0, 33.0"},
 
-            # Real Question
+            # real Question
             {"role": "user", "content": prompt}
         ]
     )
@@ -113,10 +113,10 @@ def generate_response_ask4conf(prompt, prompt_exe, client):
     - str: The content of the assistant's response.
     """
     response = client.chat.completions.create(
-        # Use GPT 3.5 as the LLM
+        # use GPT 3.5 as the LLM
         model="gpt-3.5-turbo",
-        # temperature=0,
-        # Pre-define conversation messages for the possible roles
+        # temperature=1 # default
+        # pre-define conversation messages for the possible roles
         messages=[
       {"role": "system", "content": """You are a helpful assistant. 
       Always start your answer by repeating the prompt by replying 'I heard you said ...'.
@@ -124,7 +124,7 @@ def generate_response_ask4conf(prompt, prompt_exe, client):
       Always finish with a question for confirmation."""},
 
 
-      # Few-shot examples:   
+      # few-shot examples:   
       {"role": "user", "content": "prompt: Shift along x-axis for 0.5 m; prompt_exe: delta_x, delta_y, delta_z = 500.0, 0.0, 0.0"},
       {"role": "assistant", "content": "I heard you said shift along x-axis for 0.5 m. I will move along positive x-axis for 500 mm. Does that sound good to you?"},
 
@@ -150,29 +150,29 @@ def process_prompts(prompt_list, client, generate_response_func, prompt_exe_list
     """
     completions = []
     total_usage = {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0}
-    # If prompt_exe is not provided, default to an empty list
+    # if prompt_exe is not provided, default to an empty list
     if prompt_exe_list is None:    
         for prompt in prompt_list:
             response_content, usage = generate_response_func(prompt, client)
             completions.append(response_content)
             
-            # Accumulate token usage
+            # accumulate token usage
             total_usage['prompt_tokens'] += usage.prompt_tokens
             total_usage['completion_tokens'] += usage.completion_tokens
             total_usage['total_tokens'] += usage.total_tokens
         
         return completions, total_usage
     else:
-        # Ensure prompt_list and prompt_exe have the same length
+        # ensure prompt_list and prompt_exe have the same length
         if len(prompt_list) != len(prompt_exe_list):
             raise ValueError("prompt_list and prompt_exe must have the same length")
         
-        # Process both lists together
+        # process both lists together
         for prompt, prompt_exe in zip(prompt_list, prompt_exe_list):
             response_content, usage = generate_response_func(prompt, prompt_exe, client)
             completions.append(response_content)
             
-            # Accumulate token usage
+            # accumulate token usage
             total_usage['prompt_tokens'] += usage.prompt_tokens
             total_usage['completion_tokens'] += usage.completion_tokens
             total_usage['total_tokens'] += usage.total_tokens 
