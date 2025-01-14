@@ -46,12 +46,12 @@ Han, Isla Xi and Parascho, Stefana. "From Words to Actions: A Large Language Mod
 
 *Or directly cite this Github Repo:*
 
-@misc{han_2024_repo,
-  author = {Han, Isla Xi},
-  title = {HRI_LLM},
-  year = {2024},
-  howpublished = {\url{https://github.com/islaxihan/HRI_LLM.git}},
-  note = {Accessed: Date}
+@misc{han_2024_repo,  
+  author = {Han, Isla Xi},  
+  title = {HRI_LLM},  
+  year = {2024},  
+  howpublished = {\url{https://github.com/islaxihan/HRI_LLM.git}},  
+  note = {Accessed: Date}  
 }
 
 *Feel free to adjust the citation style to match your institution's requirements or personal preferences.*
