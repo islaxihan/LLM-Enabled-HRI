@@ -12,7 +12,7 @@ This program enables human-robot interaction through voice commands, leveraging 
 The primary goal is to interpret human voice commands, convert them into executable code to adjust robotic parameters, such as those used in COMPAS FAB.
 
 Task: 
-1. Accepts human input in the form of voice commands (assumes the human is standing and facing the robotic arm for orientation).
+1. Accepts human input in natural language form (assumes the human is standing and facing the robotic arm for orientation).
 2. Translates natural language commands into executable Python code using the OpenAI API.
 3. The output code can used directly to modify robotic parameters.
 

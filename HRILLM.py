@@ -224,16 +224,16 @@ def execution_time_per_prompt(start_time, end_time, promptCount):
 
 # from audio input to text string
 def AudioToText():
-    # Prompt the user to input 'Y' or 'N' 
+    # prompt the user to input 'Y' or 'N' 
     # note this interaction can be mapped instead to other physical buttons
     startrecord = input("Start recording a clip? Y/N ").strip()
 
     # check if start recording on Windows System
     if startrecord == "y" or startrecord == "Y":
-        # Wait for 3 seconds before executing the hotkey press
+        # wait for 3 seconds before executing the hotkey press
         time.sleep(3)
 
-        # Press the hotkey combination 'Windows logo key' +' H'
+        # press the hotkey combination 'Windows logo key' +' H'
         pyautogui.hotkey('winleft', 'h')
         audioinput = input("I'm listening ... (say \"new line\" to stop listening)").strip()
         # print("Hotkey Windows + H pressed: start recording")
@@ -246,21 +246,23 @@ def AudioToText():
         print("do not record")
 
 # from text to audio using openai 
-def TextToAudio(text, audioStreamFilePath, voice = "nova"):
-    client = OpenAI()
+def TextToAudio(text, audioStreamFilePath, client, voice = "nova"):
 
+    # Start streaming the text-to-speech response from the OpenAI API
     with client.audio.speech.with_streaming_response.create(
-        model="tts-1",
-        voice="nova",
-        input=text,
+        model="tts-1", # Specify the TTS model to use
+        voice="nova", # Specify the voice for speech synthesis
+        input=text, # The text to be converted into speech
     ) as response:
+        # Stream the audio response directly to a file
         response.stream_to_file(audioStreamFilePath)
-    
+        
+    # Play the generated audio file after saving it
     playsound(audioStreamFilePath)
 
 # simulate confirmation step before robot movement
-def confirm2action(audioStreamFilePath):
-    # Prompt the user to input 'Y' or 'N' 
+def confirm2action(audioStreamFilePath, client):
+    # prompt the user to input 'Y' or 'N' 
     # note this interaction can be mapped instead to other physical buttons
     startrecord = input("Does the proposed movement align with expectations?? Y/N ").strip()
 
@@ -268,12 +270,12 @@ def confirm2action(audioStreamFilePath):
     if startrecord == "y" or startrecord == "Y":
         # verbal confirmation
         comfirm_text = "Happy to help! Robot starts moving..."
-        TextToAudio(comfirm_text, audioStreamFilePath)
+        TextToAudio(comfirm_text, audioStreamFilePath, client)
         print("Trajectory confirmed. The robot is now in motion...")
         return 1
     else:
-        # verbal response
+        # verbal response and propose for another attempt
         comfirm_text = "Oops. Incorrect trajectory. Kindly input the correct parameters and attempt again."
-        TextToAudio(comfirm_text, audioStreamFilePath)
+        TextToAudio(comfirm_text, audioStreamFilePath, client)
         print("Incorrect trajectory. Kindly input the correct parameters and attempt again.")
         return 0
