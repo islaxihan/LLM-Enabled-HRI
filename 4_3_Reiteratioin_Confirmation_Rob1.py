@@ -29,7 +29,7 @@ import os
 from openai import OpenAI
 import time
 import pandas as pd
-from HRILLM import extract_prompts, generate_response_ask4conf, process_prompts, save_to_excel_with_suffix
+from HRILLM import extract_prompts, generate_response_ask4conf, process_prompts, save_to_excel_with_suffix, execution_time_per_prompt
 
 # load DataFrame
 file_path = "TextData\Prompts_TestData_4_3.xlsx" # Excel file of prompts
@@ -43,7 +43,7 @@ client = OpenAI(
 api_key=os.getenv("OPENAI_API_KEY"),
 )
 
-# Main function
+# main function
 def main(file_path, client):
     """
     Main function to process prompts, generate completions, and save results.
@@ -52,42 +52,38 @@ def main(file_path, client):
     - file_path (str): Path to the Excel file containing the DataFrame.
     - client: The OpenAI API client.
     """
-    # Load the Excel file into a DataFrame
+    # load the Excel file into a DataFrame
     df = pd.read_excel(file_path)
     
-    # Extract prompts and previous completion for robot executation
+    # extract prompts and previous completion for robot executation
     prompt_list = extract_prompts(df, 'Prompt Contents')
     prompt_exe_list = extract_prompts(df, 'Prompt Execution')
     
-    # Generate completions
+    # generate completions
     completions, token_usage = process_prompts(prompt_list, client, generate_response_ask4conf, prompt_exe_list)
     
-    # Add completions to the DataFrame
+    # add completions to the DataFrame
     df['Completion'] = completions
     
-    # Save the updated DataFrame
+    # save the updated DataFrame
     save_to_excel_with_suffix(df, file_path, suffix="_Completion")
     
-    # Calculate and print token usage statistics per prompt
+    # calculate and print token usage statistics per prompt
     token_usage = {key: value / promptCount for key, value in token_usage.items()}
     print(f"Average Token Usage per Prompt: {token_usage}")
 
 if __name__ == "__main__":
-    # Start the timer
+    # start the timer
     start_time = time.time()
 
     # main()
     main(file_path, client)
 
-    # Stop the timer
+    # stop the timer
     end_time = time.time()
 
-    # Calculate execution time
-    execution_time = end_time - start_time
-    # Calculate per prompt time
-    execution_time_perP = execution_time/promptCount
-    print(f"Total Execution time: {execution_time:.5f} seconds")
-    print(f"Execution time per Prompt: {execution_time_perP:.5f} seconds")
+    # print average execution time per prompt
+    execution_time_per_prompt(start_time, end_time, promptCount)
 
 
 

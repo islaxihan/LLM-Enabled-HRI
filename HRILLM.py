@@ -210,3 +210,12 @@ def save_to_excel(df, file_path):
     """
     df.to_excel(file_path, index=False)
     print(f"Completion added to a new column in {file_path}")
+
+# calculate and print execution time per prompt
+def execution_time_per_prompt(start_time, end_time, promptCount):
+    # calculate execution time
+    execution_time = end_time - start_time
+    # calculate per prompt time
+    execution_time_perP = execution_time/promptCount
+    print(f"Total Execution time: {execution_time:.5f} seconds")
+    print(f"Execution time per Prompt: {execution_time_perP:.5f} seconds")
