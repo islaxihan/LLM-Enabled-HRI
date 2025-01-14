@@ -24,7 +24,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE.md) f
 
 - **Lab for Creative Computation (CRCL), EPFL**  
 [Website](https://www.crclcrclcrcl.org/)
-- **School of Architecture, Princeton University**
+- **School of Architecture, Princeton University**  
 [Website](https://soa.princeton.edu/)
 
 ## Citation
