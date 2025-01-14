@@ -31,28 +31,41 @@ Optional: COMPAS FAB or a similar robotics framework for implementing the genera
 import os
 from openai import OpenAI
 import time
-import pyautogui
-from playsound import playsound
+# import pyautogui
+# from playsound import playsound
 import pandas as pd
 
-# load testing prompts
+# load DataFrame
 file_path = "TextData\Prompts_TestData.xlsx" # Excel file of prompts
-df = pd.read_excel(file_path)
 
+# total number of test prompts
+promptCount = 100
+
+# set API key
 client = OpenAI(
 # defaults to os.environ.get("OPENAI_API_KEY")
 api_key=os.getenv("OPENAI_API_KEY"),
 )
 
-def main():
-    # extract prompt contents into a list
-    prompt_list = df['Prompt Contents'].tolist()
-    # prepare a list to restore results
-    completion_list = []
+# extract prompts from the DataFrame
+def extract_prompts(df):
+    """Extracts prompt contents from the DataFrame."""
+    return df['Prompt Contents'].tolist()
 
-    # iterate through prompts
-    for prompt in prompt_list:
-        response = client.chat.completions.create(
+# generate a single response using OpenAI API; instruction & few-shot prompting
+def generate_response(prompt, client):
+    """
+    Generates a response from the OpenAI API based on the given prompt.
+    Assumption: 
+        The human operator stands facing the robot. 
+    Args:
+    - prompt (str): The input prompt for the model.
+    - client: The OpenAI API client.
+    
+    Returns:
+    - str: The content of the assistant's response.
+    """
+    response = client.chat.completions.create(
         # Use GPT 3.5 as the LLM
         model="gpt-3.5-turbo",
         temperature=0,
@@ -114,32 +127,102 @@ def main():
             # Real Question
             {"role": "user", "content": prompt}
         ]
-        )
-        # Print and return the cleaned response content
-        response_content = response.choices[0].message.content
-        completion_list.append(response_content)
+    )
+    return response.choices[0].message.content, response.usage
 
-    # Add the responses as a new column to the DataFrame
-    df['Completion'] = completion_list
-    # Save the updated DataFrame back to the same Excel file
-    df.to_excel(file_path, index=False)
-    print(f"Completion added to a new column in {file_path}")
+# process all prompts and collect completions
+def process_prompts(prompt_list, client):
+    """
+    Processes a list of prompts, generating a completion for each.
+    
+    Args:
+    - prompt_list (list of str): List of prompts to process.
+    - client: The OpenAI API client.
+    
+    Returns:
+    - list: A list of completions.
+    - dict: Token usage statistics.
+    """
+    completions = []
+    total_usage = {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0}
+    
+    for prompt in prompt_list:
+        response_content, usage = generate_response(prompt, client)
+        completions.append(response_content)
+        
+        # Accumulate token usage
+        total_usage['prompt_tokens'] += usage.prompt_tokens
+        total_usage['completion_tokens'] += usage.completion_tokens
+        total_usage['total_tokens'] += usage.total_tokens
+    
+    return completions, total_usage
 
-    # [optional] Extract last token usage metadata
-    prompt_tokens = response.usage.prompt_tokens
-    completion_tokens = response.usage.completion_tokens
-    total_tokens = response.usage.total_tokens
+# # save the updated DataFrame to the original Excel file (alternative to save result to a new excel)
+# def save_to_excel(df, file_path):
+#     """
+#     Saves the updated DataFrame to an Excel file.
+    
+#     Args:
+#     - df (DataFrame): The updated DataFrame.
+#     - file_path (str): Path to save the Excel file.
+#     """
+#     df.to_excel(file_path, index=False)
+#     print(f"Completion added to a new column in {file_path}")
 
-    # Print the information
-    print(f"Prompt Tokens: {prompt_tokens}, Completion Tokens: {completion_tokens}, Total Tokens: {total_tokens}")
+# save result to a new excel
+def save_to_excel_with_suffix(df, file_path, suffix="_Completion"):
+    """
+    Saves the updated DataFrame to an Excel file with a suffix added to the original filename.
 
-    return
+    Args:
+    - df (DataFrame): The updated DataFrame.
+    - file_path (str): Original path of the Excel file.
+    - suffix (str): Suffix to append to the original filename before the extension.
+    """
+    # get original file name
+    file_dir, file_name = os.path.split(file_path)
+    file_base, file_ext = os.path.splitext(file_name)
+    # add suffix
+    new_file_name = f"{file_base}{suffix}{file_ext}"
+    new_file_path = os.path.join(file_dir, new_file_name)
+    # save the updated DataFrame to the new file
+    df.to_excel(new_file_path, index=False)
+    print(f"Completion saved to: {new_file_path}")
+
+# Main function
+def main(file_path, client):
+    """
+    Main function to process prompts, generate completions, and save results.
+    
+    Args:
+    - file_path (str): Path to the Excel file containing the DataFrame.
+    - client: The OpenAI API client.
+    """
+    # Load the Excel file into a DataFrame
+    df = pd.read_excel(file_path)
+    
+    # Extract prompts
+    prompt_list = extract_prompts(df)
+    
+    # Generate completions
+    completions, token_usage = process_prompts(prompt_list, client)
+    
+    # Add completions to the DataFrame
+    df['Completion'] = completions
+    
+    # Save the updated DataFrame
+    save_to_excel_with_suffix(df, file_path, suffix="_Completion")
+    
+    # Calculate and print token usage statistics per prompt
+    token_usage = {key: value / promptCount for key, value in token_usage.items()}
+    print(f"Average Token Usage per Prompt: {token_usage}")
 
 if __name__ == "__main__":
     # Start the timer
     start_time = time.time()
 
-    main()
+    # main()
+    main(file_path, client)
 
     # Stop the timer
     end_time = time.time()
@@ -147,7 +230,6 @@ if __name__ == "__main__":
     # Calculate execution time
     execution_time = end_time - start_time
     # Calculate per prompt time
-    promptCount = 100
     execution_time_perP = execution_time/promptCount
     print(f"Total Execution time: {execution_time:.5f} seconds")
     print(f"Execution time per Prompt: {execution_time_perP:.5f} seconds")
