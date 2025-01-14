@@ -32,7 +32,7 @@ import pandas as pd
 from HRILLM import extract_prompts, generate_response_ask4conf, process_prompts, save_to_excel_with_suffix, execution_time_per_prompt
 
 # load DataFrame
-file_path = "TextData\Prompts_TestData_4_3.xlsx" # Excel file of prompts
+file_path = "TestData\Prompts_TestData_4_3.xlsx" # Excel file of prompts
 
 # total number of test prompts
 promptCount = 20
