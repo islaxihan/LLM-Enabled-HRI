@@ -30,14 +30,14 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE.md) f
 ## Citation
 
 1. **BibTeX citation**:
-@inproceedings{han2025HRILLM,
-title={From Words to Actions: A large language model (LLM) approach for human-robot interaction in design-fabrication settings},
-author={Han, Isla Xi and Parascho, Stefana},
-booktitle={Proceedings of the 30th International Conference on Computer-Aided Architectural Design Research in Asia (CAADRIA 2025)},
-address = {Tokyo, Japan},
-year={2025},
-pubstate={forthcoming},
-organization={CAADRIA}
+@inproceedings{han2025HRILLM,  
+title={From Words to Actions: A large language model (LLM) approach for human-robot interaction in design-fabrication settings},  
+author={Han, Isla Xi and Parascho, Stefana},  
+booktitle={Proceedings of the 30th International Conference on Computer-Aided Architectural Design Research in Asia (CAADRIA 2025)},  
+address = {Tokyo, Japan},  
+year={2025},  
+pubstate={forthcoming},  
+organization={CAADRIA}  
 }
 
 2. **APA-style citation**:
