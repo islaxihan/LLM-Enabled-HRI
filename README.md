@@ -25,9 +25,11 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE.md) f
 - **Lab for Creative Computation (CRCL), EPFL**  
 [Website](https://www.crclcrclcrcl.org/)
 - **School of Architecture, Princeton University**
+[Website](https://soa.princeton.edu/)
 
 ## Citation
 
+1. **BibTeX citation**:
 @inproceedings{han2025HRILLM,
 title={From Words to Actions: A large language model (LLM) approach for human-robot interaction in design-fabrication settings},
 author={Han, Isla Xi and Parascho, Stefana},
@@ -38,7 +40,7 @@ pubstate={forthcoming},
 organization={CAADRIA}
 }
 
-
+2. **APA-style citation**:
 Han, Isla Xi and Parascho, Stefana. "From Words to Actions: A Large Language Model (LLM) Approach for Human-Robot Interaction in Design-Fabrication Settings." *Proceedings of the 30th International Conference on Computer-Aided Architectural Design Research in Asia (CAADRIA 2025)*. Tokyo, Japan, 2025. [Forthcoming].
 
-Feel free to adjust the citation style to match your institution's requirements or personal preferences.
+*Feel free to adjust the citation style to match your institution's requirements or personal preferences.*
