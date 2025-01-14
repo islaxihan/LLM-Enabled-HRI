@@ -136,7 +136,7 @@ def generate_response_ask4conf(prompt, prompt_exe, client):
     )
     return response.choices[0].message.content, response.usage
 
-def process_prompts(prompt_list, client, generate_response_func, prompt_exe_list=None):
+def process_prompts(prompt_list, client, generate_response_func):
     """
     Processes a list of prompts, generating a completion for each.
     
@@ -150,34 +150,17 @@ def process_prompts(prompt_list, client, generate_response_func, prompt_exe_list
     """
     completions = []
     total_usage = {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0}
-    # If prompt_exe is not provided, default to an empty list
-    if prompt_exe_list is None:    
-        for prompt in prompt_list:
-            response_content, usage = generate_response_func(prompt, client)
-            completions.append(response_content)
-            
-            # Accumulate token usage
-            total_usage['prompt_tokens'] += usage.prompt_tokens
-            total_usage['completion_tokens'] += usage.completion_tokens
-            total_usage['total_tokens'] += usage.total_tokens
+    
+    for prompt in prompt_list:
+        response_content, usage = generate_response_func(prompt, client)
+        completions.append(response_content)
         
-        return completions, total_usage
-    else:
-        # Ensure prompt_list and prompt_exe have the same length
-        if len(prompt_list) != len(prompt_exe_list):
-            raise ValueError("prompt_list and prompt_exe must have the same length")
-        
-        # Process both lists together
-        for prompt, prompt_exe in zip(prompt_list, prompt_exe_list):
-            response_content, usage = generate_response_func(prompt, prompt_exe, client)
-            completions.append(response_content)
-            
-            # Accumulate token usage
-            total_usage['prompt_tokens'] += usage.prompt_tokens
-            total_usage['completion_tokens'] += usage.completion_tokens
-            total_usage['total_tokens'] += usage.total_tokens 
-
-    return completions, total_usage       
+        # Accumulate token usage
+        total_usage['prompt_tokens'] += usage.prompt_tokens
+        total_usage['completion_tokens'] += usage.completion_tokens
+        total_usage['total_tokens'] += usage.total_tokens
+    
+    return completions, total_usage
 
 # save result to a new excel
 def save_to_excel_with_suffix(df, file_path, suffix="_Completion"):

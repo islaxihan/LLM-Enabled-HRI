@@ -18,7 +18,7 @@ Task:
 
 Evaluation: 
 - Tests the accuracy of this workflow using 100 example prompts.
-- Reports the time taken and monetary cost of the workflow at the end of the evaluation.
+- Reports the average time and token taken to executate this workflow at the end of the evaluation.
 ---
 Requirements:
 - OpenAI API (version: 1.35.15).
@@ -31,8 +31,6 @@ Optional: COMPAS FAB or a similar robotics framework for implementing the genera
 import os
 from openai import OpenAI
 import time
-# import pyautogui
-# from playsound import playsound
 import pandas as pd
 from HRILLM import extract_prompts, generate_response_robmove, process_prompts, save_to_excel_with_suffix
 
@@ -61,7 +59,7 @@ def main(file_path, client):
     df = pd.read_excel(file_path)
     
     # Extract prompts
-    prompt_list = extract_prompts(df)
+    prompt_list = extract_prompts(df, 'Prompt Contents')
     
     # Generate completions
     completions, token_usage = process_prompts(prompt_list, client, generate_response_robmove)
