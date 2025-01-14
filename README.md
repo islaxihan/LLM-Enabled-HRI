@@ -46,7 +46,7 @@ Han, Isla Xi and Parascho, Stefana. "From Words to Actions: A Large Language Mod
 
 *Or directly cite this Github Repo:*
 
-@misc{han_2025_repo,
+@misc{han_2024_repo,
   author = {Han, Isla Xi},
   title = {HRI_LLM},
   year = {2024},
