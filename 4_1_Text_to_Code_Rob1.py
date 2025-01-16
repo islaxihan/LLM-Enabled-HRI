@@ -17,7 +17,7 @@ Task:
 3. The output code can used directly to modify robotic parameters.
 
 Evaluation: 
-- Tests the accuracy of this workflow using 100 example prompts.
+- Tests the accuracy of this workflow using 130 example prompts.
 - Reports the average time and token taken to executate this workflow at the end of the evaluation.
 ---
 Requirements:
@@ -38,7 +38,7 @@ from HRILLM import extract_prompts, generate_response_robmove, process_prompts, 
 file_path = "TestData\Prompts_TestData_4_1.xlsx" # Excel file of prompts
 
 # total number of test prompts
-promptCount = 100
+promptCount = 130
 
 # set API key
 client = OpenAI(
