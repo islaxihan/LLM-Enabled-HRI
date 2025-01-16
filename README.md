@@ -1,4 +1,4 @@
-# LLM_HRI
+# LLM-Enabled HRI
 GPT integrated for verbal human-robot interaction.
 
 ## Project Description
@@ -48,7 +48,7 @@ Han, Isla Xi and Parascho, Stefana. "From Words to Actions: A Large Language Mod
 
 @misc{han_2024_repo,  
   author = {Han, Isla Xi},  
-  title = {HRI_LLM},  
+  title = {LLM-Enabled HRI},  
   year = {2024},  
   howpublished = {\url{https://github.com/islaxihan/HRI_LLM.git}},  
   note = {Accessed: Date}  
