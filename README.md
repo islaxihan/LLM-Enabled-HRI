@@ -27,7 +27,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE.md) f
 - **School of Architecture, Princeton University**  
 [Website](https://soa.princeton.edu/)
 
-## Citation
+<!-- ## Citation
 If you use this project in your research or work, please cite this article:
 
 1. **BibTeX citation**:
@@ -54,4 +54,4 @@ Han, Isla Xi and Parascho, Stefana. "From Words to Actions: A Large Language Mod
   note = {Accessed: Date}  
 }
 
-*Feel free to adjust the citation style to match your institution's requirements or personal preferences.*
+*Feel free to adjust the citation style to match your institution's requirements or personal preferences.* -->

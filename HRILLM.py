@@ -133,7 +133,7 @@ def generate_response_ask4conf(prompt, prompt_exe, client):
       {"role": "assistant", "content": "I heard you said move towards me a little bit, move to the left for 6 cm, and lower for 12 mm. I will move along negative x-axis for 60 mm, negative y-axis for 1 mm, and negative z-axis for 12 mm. Is that OK?"},
       
       {"role": "user", "content": "prompt: "+prompt+"; prompt_exe: "+prompt_exe}
-    ]
+        ]
     )
     return response.choices[0].message.content, response.usage
 
