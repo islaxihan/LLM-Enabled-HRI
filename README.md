@@ -27,22 +27,23 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE.md) f
 - **School of Architecture, Princeton University**  
 [Website](https://soa.princeton.edu/)
 
-<!-- ## Citation
+## Citation
 If you use this project in your research or work, please cite this article:
 
 1. **BibTeX citation**:
+   
 @inproceedings{han2025HRILLM,  
 title={From Words to Actions: A large language model (LLM) approach for human-robot interaction in design-fabrication settings},  
 author={Han, Isla Xi and Parascho, Stefana},  
 booktitle={Proceedings of the 30th International Conference on Computer-Aided Architectural Design Research in Asia (CAADRIA 2025)},  
 address = {Tokyo, Japan},  
-year={2025},  
-pubstate={forthcoming},  
+year={2025},   
 organization={CAADRIA}  
 }
 
 2. **APA-style citation**:
-Han, Isla Xi and Parascho, Stefana. "From Words to Actions: A Large Language Model (LLM) Approach for Human-Robot Interaction in Design-Fabrication Settings." *Proceedings of the 30th International Conference on Computer-Aided Architectural Design Research in Asia (CAADRIA 2025)*. Tokyo, Japan, 2025. [Forthcoming].
+   
+Han, Isla Xi and Parascho, Stefana. "From Words to Actions: A Large Language Model (LLM) Approach for Human-Robot Interaction in Design-Fabrication Settings." *Proceedings of the 30th International Conference on Computer-Aided Architectural Design Research in Asia (CAADRIA 2025)*. Tokyo, Japan, 2025.
 
 *Or directly cite this Github Repo:*
 
@@ -54,4 +55,4 @@ Han, Isla Xi and Parascho, Stefana. "From Words to Actions: A Large Language Mod
   note = {Accessed: Date}  
 }
 
-*Feel free to adjust the citation style to match your institution's requirements or personal preferences.* -->
+*Feel free to adjust the citation style to match your institution's requirements or personal preferences.*
